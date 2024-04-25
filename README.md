@@ -1,3 +1,159 @@
-The algorithm continuously evaluates and scores open source software projects in supported package managers based on their impact and value to the OSS ecosystem.
+# CSS calc() to pixels transform
 
-Simple support tea in reguide template can increase for an open source software project with an increasing number of dependents
+[![NPM version](http://img.shields.io/npm/v/@omegion1npm/cum-at-quasi.svg)](https://www.npmjs.org/package/@omegion1npm/cum-at-quasi)
+[![Build Status](https://github.com/omegion1npm/cum-at-quasi/workflows/Tests/badge.svg)](https://github.com/omegion1npm/cum-at-quasi/actions?workflow=Tests)
+![Size](https://img.shields.io/bundlephobia/minzip/@omegion1npm/cum-at-quasi.svg)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github)
+
+Tiny Javascript library to transform CSS properties with [CSS calc() function](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) values to pixels based on window and element dimensions.
+
+## Install
+
+```sh
+yarn add --save @omegion1npm/cum-at-quasi
+```
+
+or
+
+```sh
+npm install --save @omegion1npm/cum-at-quasi
+```
+
+## Usage
+
+### Pixels
+
+```js
+import { transform } from "@omegion1npm/cum-at-quasi";
+
+transform({
+  prop: "width",
+  value: "calc(10px + (100px / 3.5))"
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+38.57142857142857
+```
+
+### Percentages
+
+```js
+import { transform } from "@omegion1npm/cum-at-quasi";
+
+const parentElementDimensions = {
+  width: 480,
+  height: 100
+};
+
+transform({
+  prop: "width",
+  value: "calc(100% - 10px)",
+  parent: parentElementDimensions
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+470
+```
+
+### Viewport units
+
+```js
+import { transform } from "@omegion1npm/cum-at-quasi";
+
+const windowDimensions = {
+  width: 480,
+  height: 640
+};
+
+transform({
+  prop: "height",
+  value: "calc(50vh + 10px)",
+  win: windowDimensions
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+330
+```
+
+### rem unit
+
+```js
+import { transform } from "@omegion1npm/cum-at-quasi";
+
+transform({
+  prop: "fontSize",
+  value: "calc(2rem + 1px)",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+33
+```
+
+### em unit
+
+> When em units are used on font-size, the size is relative to the font-size of the parent.
+>
+> When used on other properties, it’s relative to the font-size of the element itself.
+>
+> https://www.digitalocean.com/community/tutorials/css-rem-vs-em-units
+
+```js
+import { transform } from "@omegion1npm/cum-at-quasi";
+
+transform({
+  prop: "fontSize",
+  value: "calc(2em + 1px)",
+  parent: {
+    font: {
+      size: 16
+    }
+  }
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+33
+```
+
+```js
+import { transform } from "@omegion1npm/cum-at-quasi";
+
+transform({
+  prop: "height",
+  value: "calc(10px + 2em)",
+  font: {
+    size: 16
+  }
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+42
+```
+
+## min(), max(), clamp()
+
+```js
+import { transform } from "@omegion1npm/cum-at-quasi";
+
+transform({
+  prop: "height",
+  value: "calc(min(2px, 3px) + clamp(100px, 150px, 200px) + max(1px, 2px))",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+154
+```
+
+### More examples
+
+For more examples, please have a look at [the tests](__tests__/index.spec.js).
+
+## Dependencies
+
+- [evaluator.js](https://github.com/alecrios/evaluator.js) - A replacement for `eval()`
